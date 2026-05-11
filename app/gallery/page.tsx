@@ -110,7 +110,7 @@ export default function GalleryPage() {
                     <article className="folder-media-card" key={item.src}>
                       <div className="folder-media-frame">
                         {item.type === "image" ? (
-                          <Image src={item.src} alt={item.name} fill sizes="(max-width: 900px) 100vw, 33vw" />
+                          <Image src={item.src} alt={item.name} width={1200} height={900} sizes="(max-width: 900px) 100vw, 33vw" />
                         ) : (
                           <video src={item.src} controls preload="metadata" />
                         )}
