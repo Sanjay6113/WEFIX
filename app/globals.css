@@ -111,8 +111,8 @@ select {
 }
 
 .brand-logo-full {
-  width: 220px;
-  height: 64px;
+  width: 190px;
+  height: 116px;
   border-color: rgba(142, 202, 230, 0.26);
   background: #000000;
   padding: 5px;
@@ -1044,8 +1044,8 @@ h1 {
   }
 
   .brand-logo-full {
-    width: 200px;
-    height: 58px;
+    width: 146px;
+    height: 88px;
   }
 
   .nav-actions {

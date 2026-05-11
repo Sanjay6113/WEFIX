@@ -22,7 +22,7 @@ export function SiteNav() {
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="WeFix home">
           <span className="brand-logo brand-logo-full">
-            <Image src="/images/wefix-header-logo.png" alt="WeFix Computers" width={760} height={220} priority />
+            <Image src="/images/wefix-final-logo.png" alt="WeFix Computers" width={752} height={454} priority />
           </span>
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
