@@ -9,7 +9,7 @@ import { whatsappLink } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
 
-const galleryDir = path.join(process.cwd(), "public", "galary");
+const galleryDir = path.join(process.cwd(), "public", "gallery");
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
 const videoExtensions = new Set([".mp4", ".webm", ".mov", ".m4v"]);
 
@@ -38,7 +38,7 @@ function getLocalMedia(): LocalMedia[] {
 
         return {
           name: path.basename(item.name, extension).replace(/[-_]+/g, " "),
-          src: `/galary/${encodeURIComponent(item.name)}`,
+          src: `/gallery/${encodeURIComponent(item.name)}`,
           type
         };
       })
@@ -50,7 +50,9 @@ function getLocalMedia(): LocalMedia[] {
 }
 
 function getDriveEmbedUrl() {
-  const driveLink = process.env.NEXT_PUBLIC_GALARY_DRIVE_LINK?.trim();
+  const driveLink = (
+    process.env.NEXT_PUBLIC_GALLERY_DRIVE_LINK || process.env.NEXT_PUBLIC_GALARY_DRIVE_LINK
+  )?.trim();
 
   if (!driveLink) {
     return null;
@@ -71,7 +73,7 @@ function EmptyGallery() {
     <div className="gallery-empty">
       <ImageIcon size={52} strokeWidth={1.5} />
       <h2>No photos yet.</h2>
-      <p>Add photos or videos inside <span>public/galary</span>, or configure a public Google Drive gallery link.</p>
+      <p>Add photos or videos inside <span>public/gallery</span>, or configure a public Google Drive gallery link.</p>
     </div>
   );
 }
@@ -131,7 +133,7 @@ export default function GalleryPage() {
                   <p className="section-kicker">Drive Link</p>
                   <h2>Google Drive media</h2>
                   <p>
-                    Add a public Drive folder link in <span>NEXT_PUBLIC_GALARY_DRIVE_LINK</span> to show Drive photos
+                    Add a public Drive folder link in <span>NEXT_PUBLIC_GALLERY_DRIVE_LINK</span> to show Drive photos
                     and videos here.
                   </p>
                 </div>
