@@ -70,6 +70,29 @@ const process = [
   ["Handover", "You receive the device, invoice, and post-repair usage guidance."]
 ];
 
+const gallery = [
+  {
+    title: "Liquid-cooled PC builds",
+    copy: "Clean cable routing, airflow planning, and thermal validation.",
+    className: "gallery-build"
+  },
+  {
+    title: "Repair bench diagnostics",
+    copy: "Fault isolation before the quote, not guesswork after payment.",
+    className: "gallery-diagnosis"
+  },
+  {
+    title: "Board-level repair",
+    copy: "IC, charging, short, and power rail inspection for dead devices.",
+    className: "gallery-board"
+  },
+  {
+    title: "Stress-test handover",
+    copy: "Load testing and final guidance before the customer takes it home.",
+    className: "gallery-test"
+  }
+];
+
 export default function Home() {
   return (
     <main className="site-shell">
@@ -223,6 +246,32 @@ export default function Home() {
                 </article>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="gallery">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <p className="section-kicker">Gallery</p>
+              <h2 className="section-title">Builds, benches, and repairs.</h2>
+            </div>
+            <p className="section-copy">
+              A visual snapshot of the work WeFix wants customers to see clearly: premium builds, measured repairs,
+              and disciplined testing.
+            </p>
+          </div>
+          <div className="gallery-grid">
+            {gallery.map((item) => (
+              <article className={`gallery-card ${item.className}`} key={item.title}>
+                <div>
+                  <span>WeFix work log</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
