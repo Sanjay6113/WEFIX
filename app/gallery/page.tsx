@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ImageIcon, MessageCircle } from "lucide-react";
 import { Footer } from "@/components/footer";
+import { GalleryLightbox, type GalleryMedia } from "@/components/gallery-lightbox";
 import { SiteNav } from "@/components/site-nav";
 import { whatsappLink } from "@/lib/whatsapp";
 
@@ -13,13 +13,7 @@ const galleryDir = path.join(process.cwd(), "public", "gallery");
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
 const videoExtensions = new Set([".mp4", ".webm", ".mov", ".m4v"]);
 
-type LocalMedia = {
-  name: string;
-  src: string;
-  type: "image" | "video";
-};
-
-function getLocalMedia(): LocalMedia[] {
+function getLocalMedia(): GalleryMedia[] {
   try {
     if (!fs.existsSync(galleryDir)) {
       return [];
@@ -42,7 +36,7 @@ function getLocalMedia(): LocalMedia[] {
           type
         };
       })
-      .filter((item): item is LocalMedia => Boolean(item))
+      .filter((item): item is GalleryMedia => Boolean(item))
       .sort((a, b) => a.name.localeCompare(b.name));
   } catch {
     return [];
@@ -105,29 +99,7 @@ export default function GalleryPage() {
           {hasMedia ? (
             <>
               {localMedia.length > 0 ? (
-                <div className="folder-gallery-grid">
-                  {localMedia.map((item) => (
-                    <article className="folder-media-card" key={item.src}>
-                      <div className="folder-media-frame">
-                        {item.type === "image" ? (
-                          <Image src={item.src} alt={item.name} width={1200} height={900} sizes="(max-width: 900px) 100vw, 33vw" />
-                        ) : (
-                          <video src={item.src} controls preload="metadata" />
-                        )}
-                      </div>
-                    </article>
-                  ))}
-                  {driveEmbedUrl ? (
-                    <article className="folder-media-card drive-media-card">
-                      <iframe
-                        src={driveEmbedUrl}
-                        title="WeFix Google Drive gallery"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                      />
-                    </article>
-                  ) : null}
-                </div>
+                <GalleryLightbox items={localMedia} driveEmbedUrl={driveEmbedUrl} />
               ) : driveEmbedUrl ? (
                 <div className="folder-gallery-grid">
                   <article className="folder-media-card drive-media-card">

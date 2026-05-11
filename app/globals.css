@@ -111,11 +111,11 @@ select {
 }
 
 .brand-logo-full {
-  width: 116px;
+  width: 220px;
   height: 64px;
   border-color: rgba(142, 202, 230, 0.26);
   background: #000000;
-  padding: 4px;
+  padding: 5px;
 }
 
 .nav-links {
@@ -571,6 +571,17 @@ h1 {
   transform: translateY(-2px);
 }
 
+.folder-media-button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: zoom-in;
+  padding: 0;
+  text-align: left;
+}
+
 .folder-media-frame {
   position: relative;
   background: #0b0b0b;
@@ -588,6 +599,7 @@ h1 {
   width: 100%;
   height: auto;
   object-fit: contain;
+  pointer-events: none;
 }
 
 .drive-media-card {
@@ -625,6 +637,66 @@ h1 {
 
 .gallery-empty span {
   color: var(--accent);
+}
+
+.media-lightbox {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 26px;
+}
+
+.media-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(9px);
+  cursor: zoom-out;
+}
+
+.media-lightbox-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  max-width: min(92vw, 1320px);
+  max-height: 88vh;
+  place-items: center;
+}
+
+.media-lightbox-image,
+.media-lightbox-video {
+  display: block;
+  max-width: min(92vw, 1320px);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--line);
+  background: #050505;
+  box-shadow: 0 26px 90px rgba(0, 0, 0, 0.65), 0 0 42px rgba(142, 202, 230, 0.18);
+  object-fit: contain;
+}
+
+.media-lightbox-video {
+  width: min(92vw, 1320px);
+}
+
+.media-lightbox-close {
+  position: absolute;
+  z-index: 2;
+  top: -18px;
+  right: -18px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.92);
+  color: var(--text);
+  cursor: pointer;
 }
 
 .gallery-share-cta {
