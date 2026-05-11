@@ -1,116 +1,171 @@
+import fs from "node:fs";
+import path from "node:path";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, ImageIcon, MessageCircle } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { SiteNav } from "@/components/site-nav";
 import { whatsappLink } from "@/lib/whatsapp";
 
-const companyImages = [
-  {
-    src: "/images/wefix-logo.png",
-    title: "WeFix service mark",
-    copy: "Primary company logo for digital use."
-  },
-  {
-    src: "/images/wefix-logo.jpg",
-    title: "WeFix full brand logo",
-    copy: "Original full logo asset with brand name."
-  }
-];
+export const dynamic = "force-dynamic";
 
-const pcBuildImages = [
-  {
-    src: "/images/wefix-hero-pc.png",
-    title: "Premium liquid-cooled PC",
-    copy: "Hero build visual for high-end gaming and workstation consultations."
-  },
-  {
-    src: "/images/wefix-hero-pc.png",
-    title: "Build showcase detail",
-    copy: "Cooling, cable management, and clean hardware presentation."
-  },
-  {
-    src: "/images/wefix-hero-pc.png",
-    title: "Stress-test ready build",
-    copy: "PC build imagery for the testing and handover workflow."
-  }
-];
+const galleryDir = path.join(process.cwd(), "public", "galary");
+const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
+const videoExtensions = new Set([".mp4", ".webm", ".mov", ".m4v"]);
 
-function GallerySection({
-  title,
-  copy,
-  items
-}: {
-  title: string;
-  copy: string;
-  items: { src: string; title: string; copy: string }[];
-}) {
+type LocalMedia = {
+  name: string;
+  src: string;
+  type: "image" | "video";
+};
+
+function getLocalMedia(): LocalMedia[] {
+  try {
+    if (!fs.existsSync(galleryDir)) {
+      return [];
+    }
+
+    return fs
+      .readdirSync(galleryDir, { withFileTypes: true })
+      .filter((item) => item.isFile())
+      .map((item) => {
+        const extension = path.extname(item.name).toLowerCase();
+        const type = imageExtensions.has(extension) ? "image" : videoExtensions.has(extension) ? "video" : null;
+
+        if (!type) {
+          return null;
+        }
+
+        return {
+          name: path.basename(item.name, extension).replace(/[-_]+/g, " "),
+          src: `/galary/${encodeURIComponent(item.name)}`,
+          type
+        };
+      })
+      .filter((item): item is LocalMedia => Boolean(item))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  } catch {
+    return [];
+  }
+}
+
+function getDriveEmbedUrl() {
+  const driveLink = process.env.NEXT_PUBLIC_GALARY_DRIVE_LINK?.trim();
+
+  if (!driveLink) {
+    return null;
+  }
+
+  const folderMatch = driveLink.match(/\/folders\/([a-zA-Z0-9_-]+)/) ?? driveLink.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  const folderId = folderMatch?.[1];
+
+  if (folderId) {
+    return `https://drive.google.com/embeddedfolderview?id=${folderId}#grid`;
+  }
+
+  return driveLink;
+}
+
+function EmptyGallery() {
   return (
-    <section className="section gallery-page-section">
-      <div className="container">
-        <div className="section-head">
-          <div>
-            <p className="section-kicker">Gallery</p>
-            <h2 className="section-title">{title}</h2>
-          </div>
-          <p className="section-copy">{copy}</p>
-        </div>
-        <div className="media-gallery-grid">
-          {items.map((item) => (
-            <article className="media-card" key={`${title}-${item.title}`}>
-              <div className="media-frame">
-                <Image src={item.src} alt={item.title} fill sizes="(max-width: 900px) 100vw, 33vw" />
-              </div>
-              <div className="media-card-body">
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="gallery-empty">
+      <ImageIcon size={52} strokeWidth={1.5} />
+      <h2>No photos yet.</h2>
+      <p>Add photos or videos inside <span>public/galary</span>, or configure a public Google Drive gallery link.</p>
+    </div>
   );
 }
 
 export default function GalleryPage() {
+  const localMedia = getLocalMedia();
+  const driveEmbedUrl = getDriveEmbedUrl();
+  const hasMedia = localMedia.length > 0 || Boolean(driveEmbedUrl);
+
   return (
-    <main className="site-shell gallery-page">
+    <main className="site-shell nuke-gallery-page">
       <SiteNav />
-      <section className="gallery-hero">
+      <section className="nuke-gallery-hero">
         <div className="container">
           <Link className="button button-ghost" href="/">
             <ArrowLeft size={18} />
             Back home
           </Link>
-          <div className="gallery-hero-content">
-            <p className="section-kicker">WeFix Gallery</p>
-            <h1>Company images and PC build work.</h1>
-            <p className="hero-copy">
-              A dedicated gallery for WeFix brand visuals, service images, and premium PC build showcases.
-            </p>
-            <a
-              className="button button-primary"
-              href={whatsappLink("Hi WeFix, I want to share images for a build or repair consultation.")}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <MessageCircle size={18} />
-              Share Your Device Photos
-            </a>
+          <div className="nuke-gallery-head">
+            <h1>
+              WeFix <span>Gallery</span>
+            </h1>
+            <div className="gallery-tabs" aria-label="Gallery sources">
+              <a className="gallery-tab active" href="#local-gallery">Gallery</a>
+              <a className="gallery-tab" href="#drive-gallery">Drive Link</a>
+            </div>
           </div>
         </div>
       </section>
-      <GallerySection
-        title="Company Images"
-        copy="Brand and identity assets currently available for the website."
-        items={companyImages}
-      />
-      <GallerySection
-        title="PC Build Images"
-        copy="Build-focused visuals for consultations, premium PC requests, and high-performance handovers."
-        items={pcBuildImages}
-      />
+
+      <section className="nuke-gallery-content" id="local-gallery">
+        <div className="container">
+          {hasMedia ? (
+            <>
+              {localMedia.length > 0 ? (
+                <div className="folder-gallery-grid">
+                  {localMedia.map((item) => (
+                    <article className="folder-media-card" key={item.src}>
+                      <div className="folder-media-frame">
+                        {item.type === "image" ? (
+                          <Image src={item.src} alt={item.name} fill sizes="(max-width: 900px) 100vw, 33vw" />
+                        ) : (
+                          <video src={item.src} controls preload="metadata" />
+                        )}
+                      </div>
+                      <div className="folder-media-caption">
+                        <span>{item.type}</span>
+                        <h2>{item.name}</h2>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              <section className="drive-gallery-panel" id="drive-gallery">
+                <div>
+                  <p className="section-kicker">Drive Link</p>
+                  <h2>Google Drive media</h2>
+                  <p>
+                    Add a public Drive folder link in <span>NEXT_PUBLIC_GALARY_DRIVE_LINK</span> to show Drive photos
+                    and videos here.
+                  </p>
+                </div>
+                {driveEmbedUrl ? (
+                  <iframe
+                    src={driveEmbedUrl}
+                    title="WeFix Google Drive gallery"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="drive-empty">No Drive link added yet.</div>
+                )}
+              </section>
+            </>
+          ) : (
+            <EmptyGallery />
+          )}
+        </div>
+      </section>
+
+      <section className="gallery-share-cta">
+        <div className="container">
+          <a
+            className="button button-primary"
+            href={whatsappLink("Hi WeFix, I want to share photos or videos for the website gallery.")}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <MessageCircle size={18} />
+            Share Gallery Media
+          </a>
+        </div>
+      </section>
       <Footer />
     </main>
   );
