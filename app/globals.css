@@ -110,6 +110,14 @@ select {
   object-fit: contain;
 }
 
+.brand-logo-full {
+  width: 116px;
+  height: 64px;
+  border-color: rgba(142, 202, 230, 0.26);
+  background: #000000;
+  padding: 4px;
+}
+
 .nav-links {
   display: flex;
   align-items: center;

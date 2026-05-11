@@ -8,10 +8,9 @@ export function SiteNav() {
     <header className="nav">
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="WeFix home">
-          <span className="brand-logo">
-            <Image src="/images/wefix-logo.png" alt="" width={84} height={84} priority />
+          <span className="brand-logo brand-logo-full">
+            <Image src="/images/wefix-computers-logo.png" alt="WeFix Computers" width={180} height={160} priority />
           </span>
-          <span>WeFix</span>
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
           <a href="/#build">PC Builds</a>
