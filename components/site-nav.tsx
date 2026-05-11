@@ -9,14 +9,14 @@ export function SiteNav() {
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="WeFix home">
           <span className="brand-logo">
-            <Image src="/images/wefix-logo-cropped.png" alt="" width={42} height={42} priority />
+            <Image src="/images/wefix-logo.png" alt="" width={84} height={84} priority />
           </span>
           <span>WeFix</span>
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
           <a href="/#build">PC Builds</a>
           <a href="/#repair">Repair Hub</a>
-          <a href="/#gallery">Gallery</a>
+          <Link href="/gallery">Gallery</Link>
           <Link href="/check-status">Repair Tracker</Link>
           <a href="/#pricing">Pricing</a>
         </nav>

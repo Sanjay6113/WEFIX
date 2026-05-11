@@ -92,8 +92,8 @@ select {
 
 .brand-logo {
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 58px;
+  height: 46px;
   place-items: center;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -104,7 +104,7 @@ select {
 .brand-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .nav-links {
@@ -354,6 +354,12 @@ h1 {
   gap: 16px;
 }
 
+.gallery-preview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
 .gallery-card {
   position: relative;
   display: flex;
@@ -424,6 +430,83 @@ h1 {
 
 .gallery-test {
   background-position: 22% center;
+}
+
+.gallery-company {
+  background-image:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.04) 0%, rgba(10, 10, 10, 0.82) 100%),
+    url("/images/wefix-logo.png");
+  background-color: #ffffff;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.gallery-link {
+  width: fit-content;
+  grid-column: 1 / -1;
+}
+
+.gallery-page {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(142, 202, 230, 0.15), transparent 28rem),
+    var(--bg);
+}
+
+.gallery-hero {
+  padding: 130px 0 34px;
+}
+
+.gallery-hero-content {
+  margin-top: 52px;
+}
+
+.gallery-page-section {
+  padding-top: 54px;
+}
+
+.media-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.media-card {
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  background: rgba(18, 18, 18, 0.74);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.media-card:hover {
+  border-color: var(--line);
+  box-shadow: 0 0 34px rgba(142, 202, 230, 0.13);
+  transform: translateY(-2px);
+}
+
+.media-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #ffffff;
+}
+
+.media-frame img {
+  object-fit: contain;
+  padding: 16px;
+}
+
+.media-card-body {
+  padding: 18px;
+}
+
+.media-card-body h3 {
+  font-size: 1.05rem;
+}
+
+.media-card-body p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .configurator {
@@ -677,6 +760,8 @@ h1 {
   .trust-bar,
   .glass-grid,
   .gallery-grid,
+  .gallery-preview,
+  .media-gallery-grid,
   .configurator,
   .repair-layout {
     grid-template-columns: 1fr;

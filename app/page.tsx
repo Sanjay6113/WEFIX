@@ -70,29 +70,6 @@ const process = [
   ["Handover", "You receive the device, invoice, and post-repair usage guidance."]
 ];
 
-const gallery = [
-  {
-    title: "Liquid-cooled PC builds",
-    copy: "Clean cable routing, airflow planning, and thermal validation.",
-    className: "gallery-build"
-  },
-  {
-    title: "Repair bench diagnostics",
-    copy: "Fault isolation before the quote, not guesswork after payment.",
-    className: "gallery-diagnosis"
-  },
-  {
-    title: "Board-level repair",
-    copy: "IC, charging, short, and power rail inspection for dead devices.",
-    className: "gallery-board"
-  },
-  {
-    title: "Stress-test handover",
-    copy: "Load testing and final guidance before the customer takes it home.",
-    className: "gallery-test"
-  }
-];
-
 export default function Home() {
   return (
     <main className="site-shell">
@@ -250,7 +227,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section" id="gallery">
+      <section className="section">
         <div className="container">
           <div className="section-head">
             <div>
@@ -262,16 +239,25 @@ export default function Home() {
               and disciplined testing.
             </p>
           </div>
-          <div className="gallery-grid">
-            {gallery.map((item) => (
-              <article className={`gallery-card ${item.className}`} key={item.title}>
-                <div>
-                  <span>WeFix work log</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.copy}</p>
-                </div>
-              </article>
-            ))}
+          <div className="gallery-preview">
+            <article className="gallery-card gallery-build">
+              <div>
+                <span>PC builds</span>
+                <h3>Custom builds and testing</h3>
+                <p>Thermal-focused build planning, cable routing, and stability checks.</p>
+              </div>
+            </article>
+            <article className="gallery-card gallery-company">
+              <div>
+                <span>Company images</span>
+                <h3>Brand and workshop visuals</h3>
+                <p>See the WeFix brand assets and service visuals in one dedicated page.</p>
+              </div>
+            </article>
+            <Link className="button button-primary gallery-link" href="/gallery">
+              Open Gallery
+              <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>
