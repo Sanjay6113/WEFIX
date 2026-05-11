@@ -74,9 +74,11 @@ select {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  color: #ffffff;
   font-family: var(--font-display), sans-serif;
   font-weight: 800;
+  text-shadow: 0 0 16px rgba(142, 202, 230, 0.18);
 }
 
 .brand-mark {
@@ -92,13 +94,14 @@ select {
 
 .brand-logo {
   display: grid;
-  width: 58px;
-  height: 46px;
+  width: 72px;
+  height: 54px;
   place-items: center;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 2px solid rgba(142, 202, 230, 0.72);
   background: #ffffff;
-  box-shadow: 0 0 26px rgba(142, 202, 230, 0.18);
+  padding: 5px;
+  box-shadow: 0 0 26px rgba(142, 202, 230, 0.28);
 }
 
 .brand-logo img {
