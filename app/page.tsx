@@ -227,41 +227,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <p className="section-kicker">Gallery</p>
-              <h2 className="section-title">Builds, benches, and repairs.</h2>
-            </div>
-            <p className="section-copy">
-              A visual snapshot of the work WeFix wants customers to see clearly: premium builds, measured repairs,
-              and disciplined testing.
-            </p>
-          </div>
-          <div className="gallery-preview">
-            <article className="gallery-card gallery-build">
-              <div>
-                <span>PC builds</span>
-                <h3>Custom builds and testing</h3>
-                <p>Thermal-focused build planning, cable routing, and stability checks.</p>
-              </div>
-            </article>
-            <article className="gallery-card gallery-company">
-              <div>
-                <span>Company images</span>
-                <h3>Brand and workshop visuals</h3>
-                <p>See the WeFix brand assets and service visuals in one dedicated page.</p>
-              </div>
-            </article>
-            <Link className="button button-primary gallery-link" href="/gallery">
-              Open Gallery
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <section className="section" id="pricing">
         <div className="container">
           <div className="section-head">

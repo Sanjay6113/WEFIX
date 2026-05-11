@@ -96,10 +96,6 @@ export default function GalleryPage() {
             <h1>
               WeFix <span>Gallery</span>
             </h1>
-            <div className="gallery-tabs" aria-label="Gallery sources">
-              <a className="gallery-tab active" href="#local-gallery">Gallery</a>
-              <a className="gallery-tab" href="#drive-gallery">Drive Link</a>
-            </div>
           </div>
         </div>
       </section>
@@ -119,35 +115,31 @@ export default function GalleryPage() {
                           <video src={item.src} controls preload="metadata" />
                         )}
                       </div>
-                      <div className="folder-media-caption">
-                        <span>{item.type}</span>
-                        <h2>{item.name}</h2>
-                      </div>
                     </article>
                   ))}
+                  {driveEmbedUrl ? (
+                    <article className="folder-media-card drive-media-card">
+                      <iframe
+                        src={driveEmbedUrl}
+                        title="WeFix Google Drive gallery"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </article>
+                  ) : null}
+                </div>
+              ) : driveEmbedUrl ? (
+                <div className="folder-gallery-grid">
+                  <article className="folder-media-card drive-media-card">
+                    <iframe
+                      src={driveEmbedUrl}
+                      title="WeFix Google Drive gallery"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  </article>
                 </div>
               ) : null}
-
-              <section className="drive-gallery-panel" id="drive-gallery">
-                <div>
-                  <p className="section-kicker">Drive Link</p>
-                  <h2>Google Drive media</h2>
-                  <p>
-                    Add a public Drive folder link in <span>NEXT_PUBLIC_GALLERY_DRIVE_LINK</span> to show Drive photos
-                    and videos here.
-                  </p>
-                </div>
-                {driveEmbedUrl ? (
-                  <iframe
-                    src={driveEmbedUrl}
-                    title="WeFix Google Drive gallery"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <div className="drive-empty">No Drive link added yet.</div>
-                )}
-              </section>
             </>
           ) : (
             <EmptyGallery />
