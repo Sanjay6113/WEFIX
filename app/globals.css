@@ -136,6 +136,21 @@ select {
   gap: 10px;
 }
 
+.mobile-menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: rgba(18, 18, 18, 0.88);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+}
+
 .button {
   display: inline-flex;
   min-height: 44px;
@@ -951,6 +966,35 @@ h1 {
     display: none;
   }
 
+  .mobile-menu-toggle {
+    display: grid;
+  }
+
+  .mobile-menu {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 16px;
+    z-index: 40;
+    display: grid;
+    min-width: 230px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: rgba(10, 10, 10, 0.96);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 28px rgba(142, 202, 230, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-menu a {
+    border-bottom: 1px solid var(--line-soft);
+    padding: 16px 18px;
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: 0;
+  }
+
   .trust-bar,
   .glass-grid,
   .gallery-grid,
@@ -996,10 +1040,25 @@ h1 {
 
   .nav-inner {
     min-height: 64px;
+    gap: 10px;
+  }
+
+  .brand-logo-full {
+    width: 200px;
+    height: 58px;
+  }
+
+  .nav-actions {
+    gap: 8px;
   }
 
   .nav-actions .button-secondary {
     display: none;
+  }
+
+  .nav-actions .button-primary {
+    min-height: 44px;
+    padding: 0 14px;
   }
 
   .hero {
