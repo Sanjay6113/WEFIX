@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type GalleryMedia = {
   name: string;
@@ -12,21 +12,43 @@ export type GalleryMedia = {
 
 export function GalleryLightbox({
   items,
-  driveEmbedUrl
+  driveEmbedUrl,
 }: {
   items: GalleryMedia[];
   driveEmbedUrl: string | null;
 }) {
   const [selected, setSelected] = useState<GalleryMedia | null>(null);
+  const dialog = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!selected) {
       return;
     }
 
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    dialog.current
+      ?.querySelector<HTMLButtonElement>(".media-lightbox-close")
+      ?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setSelected(null);
+      }
+      if (event.key === "Tab") {
+        const controls = Array.from(
+          dialog.current?.querySelectorAll<HTMLElement>(
+            'button, a[href], video[controls], [tabindex="0"]',
+          ) || [],
+        );
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       }
     };
 
@@ -34,8 +56,9 @@ export function GalleryLightbox({
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
+      previousFocus?.focus();
     };
   }, [selected]);
 
@@ -52,7 +75,13 @@ export function GalleryLightbox({
             >
               <div className="folder-media-frame">
                 {item.type === "image" ? (
-                  <Image src={item.src} alt={item.name} width={1200} height={900} sizes="(max-width: 900px) 100vw, 33vw" />
+                  <Image
+                    src={item.src}
+                    alt={item.name}
+                    width={1200}
+                    height={900}
+                    sizes="(max-width: 900px) 100vw, 33vw"
+                  />
                 ) : (
                   <video src={item.src} muted preload="metadata" />
                 )}
@@ -74,10 +103,26 @@ export function GalleryLightbox({
       </div>
 
       {selected ? (
-        <div className="media-lightbox" role="dialog" aria-modal="true" aria-label={selected.name}>
-          <button className="media-lightbox-backdrop" aria-label="Close gallery preview" onClick={() => setSelected(null)} type="button" />
+        <div
+          ref={dialog}
+          className="media-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={selected.name}
+        >
+          <button
+            className="media-lightbox-backdrop"
+            aria-label="Close gallery preview"
+            onClick={() => setSelected(null)}
+            type="button"
+          />
           <div className="media-lightbox-stage">
-            <button className="media-lightbox-close" aria-label="Close gallery preview" onClick={() => setSelected(null)} type="button">
+            <button
+              className="media-lightbox-close"
+              aria-label="Close gallery preview"
+              onClick={() => setSelected(null)}
+              type="button"
+            >
               <X size={22} />
             </button>
             {selected.type === "image" ? (
@@ -91,7 +136,12 @@ export function GalleryLightbox({
                 priority
               />
             ) : (
-              <video className="media-lightbox-video" src={selected.src} controls autoPlay />
+              <video
+                className="media-lightbox-video"
+                src={selected.src}
+                controls
+                autoPlay
+              />
             )}
           </div>
         </div>

@@ -12,65 +12,76 @@ import {
   Microscope,
   ShieldCheck,
   Sparkles,
-  Wrench
+  Wrench,
 } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { PcConfigurator } from "@/components/pc-configurator";
 import { SiteNav } from "@/components/site-nav";
-import { whatsappLink } from "@/lib/whatsapp";
+import { WhatsAppLink } from "@/components/site-content";
+import { getContent } from "@/lib/content";
+import { money } from "@/lib/domain";
 
 const adviceCards = [
   {
     icon: BrainCircuit,
     title: "Advice before parts",
-    copy: "We explain bottlenecks, failure causes, and upgrade paths before recommending a repair or build."
+    copy: "We explain bottlenecks, failure causes, and upgrade paths before recommending a repair or build.",
   },
   {
     icon: Gauge,
     title: "Stress-tested decisions",
-    copy: "Thermals, stability, and real workload checks guide every premium PC handover."
+    copy: "Thermals, stability, and real workload checks guide every premium PC handover.",
   },
   {
     icon: ClipboardCheck,
     title: "Transparent quotes",
-    copy: "You see the repair logic and price comparison before committing."
-  }
+    copy: "You see the repair logic and price comparison before committing.",
+  },
 ];
 
 const repairCards = [
   {
     icon: Wrench,
     title: "Laptop Hospital",
-    copy: "Screen, battery, hinge, keyboard, and IC-level motherboard repairs for daily drivers and creator laptops."
+    copy: "Screen, battery, hinge, keyboard, and IC-level motherboard repairs for daily drivers and creator laptops.",
   },
   {
     icon: Droplets,
     title: "Water Damage Recovery",
-    copy: "Board cleaning, corrosion treatment, diagnostics, and recovery planning with clear risk communication."
+    copy: "Board cleaning, corrosion treatment, diagnostics, and recovery planning with clear risk communication.",
   },
   {
     icon: Microscope,
     title: "Motherboard & IC Work",
-    copy: "Component-level inspection for dead laptops, charging faults, shorts, and power rail issues."
-  }
-];
-
-const prices = [
-  ["Laptop screen replacement", "Rs. 5,500", "From Rs. 4,299"],
-  ["Battery replacement", "Rs. 4,200", "From Rs. 3,299"],
-  ["Motherboard IC repair", "Rs. 5,000", "From Rs. 3,499"],
-  ["Water damage diagnosis", "Rs. 1,500", "Rs. 799"]
+    copy: "Component-level inspection for dead laptops, charging faults, shorts, and power rail issues.",
+  },
 ];
 
 const process = [
-  ["Diagnosis", "We inspect the device, isolate the fault, and explain the likely cause."],
-  ["Quote", "You receive a repair path, pricing, and realistic success expectations."],
-  ["Repair", "The engineer works on the approved job with parts and progress tracked."],
-  ["Stress Test", "Repaired devices and PCs go through workload, thermal, and stability checks."],
-  ["Handover", "You receive the device, invoice, and post-repair usage guidance."]
+  [
+    "Diagnosis",
+    "We inspect the device, isolate the fault, and explain the likely cause.",
+  ],
+  [
+    "Quote",
+    "You receive a repair path, pricing, and realistic success expectations.",
+  ],
+  [
+    "Repair",
+    "The engineer works on the approved job with parts and progress tracked.",
+  ],
+  [
+    "Stress Test",
+    "Repaired devices and PCs go through workload, thermal, and stability checks.",
+  ],
+  [
+    "Handover",
+    "You receive the device, invoice, and post-repair usage guidance.",
+  ],
 ];
 
-export default function Home() {
+export default async function Home() {
+  const content = await getContent();
   return (
     <main className="site-shell">
       <SiteNav />
@@ -92,28 +103,29 @@ export default function Home() {
             </div>
             <h1>Your Tech Advisors for Life.</h1>
             <p className="hero-copy">
-              Premium custom PC builds and expert hardware repairs with the part you rarely get from repair shops:
-              clear technical education before you spend.
+              Premium custom PC builds and expert hardware repairs with the part
+              you rarely get from repair shops: clear technical education before
+              you spend.
             </p>
             <div className="hero-actions">
-              <a
+              <WhatsAppLink
                 className="button button-primary"
-                href={whatsappLink("Hi WeFix, I want help building a custom PC.")}
+                template="build"
                 target="_blank"
                 rel="noreferrer"
               >
                 Build My PC
                 <ArrowRight size={18} />
-              </a>
-              <a
+              </WhatsAppLink>
+              <WhatsAppLink
                 className="button button-secondary"
-                href={whatsappLink("Hi WeFix, I need a device repair quote.")}
+                template="repair"
                 target="_blank"
                 rel="noreferrer"
               >
                 <MessageCircle size={18} />
                 Fix My Device
-              </a>
+              </WhatsAppLink>
             </div>
           </div>
           <div className="trust-bar">
@@ -141,7 +153,9 @@ export default function Home() {
               </span>
               <div>
                 <strong>48-Hour Stress Testing</strong>
-                <span>Thermal, power, and stability checks before handover.</span>
+                <span>
+                  Thermal, power, and stability checks before handover.
+                </span>
               </div>
             </div>
           </div>
@@ -153,11 +167,13 @@ export default function Home() {
           <div className="section-head">
             <div>
               <p className="section-kicker">Understand first</p>
-              <h2 className="section-title">Do not just fix it. Understand it.</h2>
+              <h2 className="section-title">
+                Do not just fix it. Understand it.
+              </h2>
             </div>
             <p className="section-copy">
-              WeFix positions the engineer as an advisor, so every customer leaves with a working device and a better
-              grasp of what happened.
+              WeFix positions the engineer as an advisor, so every customer
+              leaves with a working device and a better grasp of what happened.
             </p>
           </div>
           <div className="glass-grid">
@@ -182,10 +198,13 @@ export default function Home() {
           <div className="section-head">
             <div>
               <p className="section-kicker">PC build configurator</p>
-              <h2 className="section-title">A build brief in under a minute.</h2>
+              <h2 className="section-title">
+                A build brief in under a minute.
+              </h2>
             </div>
             <p className="section-copy">
-              Pick the workload, budget band, and CPU preference. The summary becomes a WhatsApp-ready advisor request.
+              Pick the workload, budget band, and CPU preference. The summary
+              becomes a WhatsApp-ready advisor request.
             </p>
           </div>
           <PcConfigurator />
@@ -196,10 +215,12 @@ export default function Home() {
         <div className="container repair-layout">
           <div>
             <p className="section-kicker">Repair hub</p>
-            <h2 className="section-title">Hardware repairs with a visible process.</h2>
+            <h2 className="section-title">
+              Hardware repairs with a visible process.
+            </h2>
             <p className="section-copy">
-              From water damage to motherboard faults, WeFix combines diagnosis, repair, stress testing, and status
-              visibility.
+              From water damage to motherboard faults, WeFix combines diagnosis,
+              repair, stress testing, and status visibility.
             </p>
             <div className="timeline" style={{ marginTop: 34 }}>
               {process.map(([title, copy]) => (
@@ -249,11 +270,14 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {prices.map(([service, market, wefix]) => (
-                  <tr key={service}>
-                    <td>{service}</td>
-                    <td>{market}</td>
-                    <td>{wefix}</td>
+                {content.prices.map((price) => (
+                  <tr key={price.id}>
+                    <td>{price.service}</td>
+                    <td>{money(price.market_price)}</td>
+                    <td>
+                      {price.from_price ? "From " : ""}
+                      {money(price.price)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -268,20 +292,24 @@ export default function Home() {
             <div className="section-head" style={{ marginBottom: 0 }}>
               <div>
                 <p className="section-kicker">Priority consultation</p>
-                <h2 className="section-title">Book the advisor call before parts move.</h2>
+                <h2 className="section-title">
+                  Book the advisor call before parts move.
+                </h2>
                 <p className="section-copy">
-                  Use a small token consultation flow with Razorpay later, then adjust it in the final bill.
+                  Book a priority tech advisor call for{" "}
+                  {money(content.consultationFee)}. Message us to confirm a time
+                  and payment arrangements.
                 </p>
               </div>
-              <a
+              <WhatsAppLink
                 className="button button-primary"
-                href={whatsappLink("Hi WeFix, I want to book a Rs. 299 priority tech advisor call.")}
+                template="priority"
                 target="_blank"
                 rel="noreferrer"
               >
                 Book Priority Call
                 <ArrowRight size={18} />
-              </a>
+              </WhatsAppLink>
             </div>
           </div>
         </div>

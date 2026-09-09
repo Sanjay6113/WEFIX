@@ -4,14 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { CalendarCheck, Menu, MessageCircle, X } from "lucide-react";
 import { useState } from "react";
-import { whatsappLink } from "@/lib/whatsapp";
+import { WhatsAppLink } from "@/components/site-content";
 
 const navItems = [
   { href: "/#build", label: "PC Builds" },
   { href: "/#repair", label: "Repair Hub" },
   { href: "/gallery", label: "Gallery" },
   { href: "/check-status", label: "Repair Tracker" },
-  { href: "/#pricing", label: "Pricing" }
+  { href: "/#pricing", label: "Pricing" },
 ];
 
 export function SiteNav() {
@@ -22,7 +22,13 @@ export function SiteNav() {
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="WeFix home">
           <span className="brand-logo brand-logo-full">
-            <Image src="/images/wefix-final-logo.png" alt="WeFix Computers" width={752} height={454} priority />
+            <Image
+              src="/images/wefix-final-logo.png"
+              alt="WeFix Computers"
+              width={752}
+              height={454}
+              priority
+            />
           </span>
         </Link>
         <nav className="nav-links" aria-label="Main navigation">
@@ -37,15 +43,15 @@ export function SiteNav() {
             <CalendarCheck size={18} />
             Track
           </Link>
-          <a
+          <WhatsAppLink
             className="button button-primary"
-            href={whatsappLink("Hi WeFix, I want a priority tech advisor consultation.")}
+            template="consult"
             target="_blank"
             rel="noreferrer"
           >
             <MessageCircle size={18} />
             Consult
-          </a>
+          </WhatsAppLink>
           <button
             className="mobile-menu-toggle"
             type="button"
@@ -60,7 +66,11 @@ export function SiteNav() {
       {isMenuOpen ? (
         <nav className="mobile-menu" aria-label="Mobile navigation">
           {navItems.map((item) => (
-            <Link href={item.href} key={item.label} onClick={() => setIsMenuOpen(false)}>
+            <Link
+              href={item.href}
+              key={item.label}
+              onClick={() => setIsMenuOpen(false)}
+            >
               {item.label}
             </Link>
           ))}

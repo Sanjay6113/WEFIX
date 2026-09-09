@@ -9,7 +9,11 @@ export default function CheckStatusPage() {
     <main className="tracker-shell">
       <SiteNav />
       <div className="container">
-        <Link className="button button-ghost" href="/" style={{ marginBottom: 18 }}>
+        <Link
+          className="button button-ghost"
+          href="/"
+          style={{ marginBottom: 18 }}
+        >
           <ArrowLeft size={18} />
           Back home
         </Link>

@@ -1,50 +1,51 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2, Cpu, MonitorPlay, PenTool, WalletCards } from "lucide-react";
+import { useState } from "react";
+import { useSiteContent, WhatsAppLink } from "./site-content";
+import { budgetRange } from "@/lib/domain";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Cpu,
+  MonitorPlay,
+  PenTool,
+  WalletCards,
+} from "lucide-react";
 
 const useCases = [
-  { label: "Gaming", detail: "High FPS, thermals, upgrade path", icon: MonitorPlay },
-  { label: "Video Editing", detail: "Timeline performance and render speed", icon: PenTool },
-  { label: "Office", detail: "Quiet, reliable daily productivity", icon: WalletCards }
-];
-
-const budgets = [
-  { label: "Entry", detail: "Smart value without weak parts", range: "Rs. 45k-75k" },
-  { label: "Mid", detail: "Balanced performance for years", range: "Rs. 75k-1.4L" },
-  { label: "Extreme", detail: "No-compromise cooling and compute", range: "Rs. 1.4L+" }
+  {
+    label: "Gaming",
+    detail: "High FPS, thermals, upgrade path",
+    icon: MonitorPlay,
+  },
+  {
+    label: "Video Editing",
+    detail: "Timeline performance and render speed",
+    icon: PenTool,
+  },
+  {
+    label: "Office",
+    detail: "Quiet, reliable daily productivity",
+    icon: WalletCards,
+  },
 ];
 
 const cpuPrefs = [
   { label: "Intel", detail: "Great single-core and creator workflows" },
   { label: "AMD", detail: "Efficient performance and platform value" },
-  { label: "Advisor Pick", detail: "We choose after current market pricing" }
+  { label: "Advisor Pick", detail: "We choose after current market pricing" },
 ];
 
 export function PcConfigurator() {
+  const { budgets } = useSiteContent();
   const [useCase, setUseCase] = useState(useCases[0].label);
-  const [budget, setBudget] = useState(budgets[1].label);
+  const [budget, setBudget] = useState("mid");
   const [cpu, setCpu] = useState(cpuPrefs[2].label);
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
 
-  const selectedBudget = budgets.find((item) => item.label === budget) ?? budgets[1];
-
-  const whatsappHref = useMemo(() => {
-    const message = [
-      "Hi WeFix, I want a custom PC build consultation.",
-      `Use case: ${useCase}`,
-      `Budget: ${budget} (${selectedBudget.range})`,
-      `CPU preference: ${cpu}`,
-      name ? `Name: ${name}` : "",
-      contact ? `Contact: ${contact}` : ""
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    const phone = process.env.NEXT_PUBLIC_WEFIX_WHATSAPP || "919994428061";
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  }, [budget, contact, cpu, name, selectedBudget.range, useCase]);
+  const selectedBudget =
+    budgets.find((item) => item.id === budget) ?? budgets[0];
 
   return (
     <div className="configurator">
@@ -61,6 +62,7 @@ export function PcConfigurator() {
                 className={`choice ${useCase === item.label ? "active" : ""}`}
                 key={item.label}
                 onClick={() => setUseCase(item.label)}
+                aria-pressed={useCase === item.label}
                 type="button"
               >
                 <span>
@@ -82,16 +84,17 @@ export function PcConfigurator() {
         <div className="choice-grid">
           {budgets.map((item) => (
             <button
-              className={`choice ${budget === item.label ? "active" : ""}`}
-              key={item.label}
-              onClick={() => setBudget(item.label)}
+              className={`choice ${budget === item.id ? "active" : ""}`}
+              key={item.id}
+              onClick={() => setBudget(item.id)}
+              aria-pressed={budget === item.id}
               type="button"
             >
               <span>
                 <strong>{item.label}</strong>
                 <span>{item.detail}</span>
               </span>
-              <strong>{item.range}</strong>
+              <strong>{budgetRange(item)}</strong>
             </button>
           ))}
           {cpuPrefs.map((item) => (
@@ -99,6 +102,7 @@ export function PcConfigurator() {
               className={`choice ${cpu === item.label ? "active" : ""}`}
               key={item.label}
               onClick={() => setCpu(item.label)}
+              aria-pressed={cpu === item.label}
               type="button"
             >
               <span>
@@ -124,7 +128,7 @@ export function PcConfigurator() {
           </div>
           <div className="summary-row">
             <span>Budget</span>
-            <strong>{selectedBudget.range}</strong>
+            <strong>{budgetRange(selectedBudget)}</strong>
           </div>
           <div className="summary-row">
             <span>CPU path</span>
@@ -133,22 +137,37 @@ export function PcConfigurator() {
         </div>
         <div className="input-grid">
           <input
+            aria-label="Name"
             className="field"
             onChange={(event) => setName(event.target.value)}
             placeholder="Name"
             value={name}
           />
           <input
+            aria-label="Phone or WhatsApp"
+            type="tel"
             className="field"
             onChange={(event) => setContact(event.target.value)}
             placeholder="Phone or WhatsApp"
             value={contact}
           />
         </div>
-        <a className="button button-primary" href={whatsappHref} rel="noreferrer" target="_blank" style={{ marginTop: 14 }}>
+        <WhatsAppLink
+          className="button button-primary"
+          template="configurator"
+          variables={{
+            use_case: useCase,
+            budget: selectedBudget.label,
+            budget_range: budgetRange(selectedBudget),
+            cpu,
+            name,
+            contact,
+          }}
+          style={{ marginTop: 14 }}
+        >
           Send to WhatsApp
           <ArrowRight size={18} />
-        </a>
+        </WhatsAppLink>
       </div>
     </div>
   );

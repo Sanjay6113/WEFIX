@@ -3,14 +3,25 @@ import path from "node:path";
 import Link from "next/link";
 import { ArrowLeft, ImageIcon, MessageCircle } from "lucide-react";
 import { Footer } from "@/components/footer";
-import { GalleryLightbox, type GalleryMedia } from "@/components/gallery-lightbox";
+import {
+  GalleryLightbox,
+  type GalleryMedia,
+} from "@/components/gallery-lightbox";
 import { SiteNav } from "@/components/site-nav";
-import { whatsappLink } from "@/lib/whatsapp";
+import { WhatsAppLink } from "@/components/site-content";
+import { getGallery } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 const galleryDir = path.join(process.cwd(), "public", "gallery");
-const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
+const imageExtensions = new Set([
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif",
+  ".avif",
+]);
 const videoExtensions = new Set([".mp4", ".webm", ".mov", ".m4v"]);
 
 function getLocalMedia(): GalleryMedia[] {
@@ -24,7 +35,11 @@ function getLocalMedia(): GalleryMedia[] {
       .filter((item) => item.isFile())
       .map((item) => {
         const extension = path.extname(item.name).toLowerCase();
-        const type = imageExtensions.has(extension) ? "image" : videoExtensions.has(extension) ? "video" : null;
+        const type = imageExtensions.has(extension)
+          ? "image"
+          : videoExtensions.has(extension)
+            ? "video"
+            : null;
 
         if (!type) {
           return null;
@@ -33,7 +48,7 @@ function getLocalMedia(): GalleryMedia[] {
         return {
           name: path.basename(item.name, extension).replace(/[-_]+/g, " "),
           src: `/gallery/${encodeURIComponent(item.name)}`,
-          type
+          type,
         };
       })
       .filter((item): item is GalleryMedia => Boolean(item))
@@ -45,14 +60,17 @@ function getLocalMedia(): GalleryMedia[] {
 
 function getDriveEmbedUrl() {
   const driveLink = (
-    process.env.NEXT_PUBLIC_GALLERY_DRIVE_LINK || process.env.NEXT_PUBLIC_GALARY_DRIVE_LINK
+    process.env.NEXT_PUBLIC_GALLERY_DRIVE_LINK ||
+    process.env.NEXT_PUBLIC_GALARY_DRIVE_LINK
   )?.trim();
 
   if (!driveLink) {
     return null;
   }
 
-  const folderMatch = driveLink.match(/\/folders\/([a-zA-Z0-9_-]+)/) ?? driveLink.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  const folderMatch =
+    driveLink.match(/\/folders\/([a-zA-Z0-9_-]+)/) ??
+    driveLink.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   const folderId = folderMatch?.[1];
 
   if (folderId) {
@@ -67,13 +85,14 @@ function EmptyGallery() {
     <div className="gallery-empty">
       <ImageIcon size={52} strokeWidth={1.5} />
       <h2>No photos yet.</h2>
-      <p>Add photos or videos inside <span>public/gallery</span>, or configure a public Google Drive gallery link.</p>
+      <p>Our workshop photos and videos will appear here soon.</p>
     </div>
   );
 }
 
-export default function GalleryPage() {
-  const localMedia = getLocalMedia();
+export default async function GalleryPage() {
+  const managedMedia = await getGallery();
+  const localMedia = managedMedia ?? getLocalMedia();
   const driveEmbedUrl = getDriveEmbedUrl();
   const hasMedia = localMedia.length > 0 || Boolean(driveEmbedUrl);
 
@@ -99,7 +118,10 @@ export default function GalleryPage() {
           {hasMedia ? (
             <>
               {localMedia.length > 0 ? (
-                <GalleryLightbox items={localMedia} driveEmbedUrl={driveEmbedUrl} />
+                <GalleryLightbox
+                  items={localMedia}
+                  driveEmbedUrl={driveEmbedUrl}
+                />
               ) : driveEmbedUrl ? (
                 <div className="folder-gallery-grid">
                   <article className="folder-media-card drive-media-card">
@@ -121,15 +143,15 @@ export default function GalleryPage() {
 
       <section className="gallery-share-cta">
         <div className="container">
-          <a
+          <WhatsAppLink
             className="button button-primary"
-            href={whatsappLink("Hi WeFix, I want to share photos or videos for the website gallery.")}
+            template="gallery"
             target="_blank"
             rel="noreferrer"
           >
             <MessageCircle size={18} />
             Share Gallery Media
-          </a>
+          </WhatsAppLink>
         </div>
       </section>
       <Footer />

@@ -2,6 +2,12 @@
 
 Premium dark-tech Next.js landing platform for WeFix: PC builds, expert repairs, WhatsApp lead generation, and a repair tracker.
 
+## Admin portal
+
+Staff can manage pricing, gallery uploads, WhatsApp templates, clients, and orders at `/admin`. Customers browse without accounts and receive private order-tracking links. See [the complete admin setup guide](docs/ADMIN-SETUP.md) for Supabase configuration, migrations, first-admin provisioning, password recovery, and testing.
+
+Use Node.js 22 or 24 LTS. Copy values from `.env.example` into `.env.local`, apply the additive migration in `supabase/migrations`, and run `npm run db:seed`. Existing data and media are preserved. The admin portal clearly shows when Supabase is not configured.
+
 ## Run locally
 
 ```bash
